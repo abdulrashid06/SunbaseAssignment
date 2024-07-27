@@ -23,7 +23,6 @@ This project is a Customer Management System built with a Spring Boot backend, M
 - Java 8 or later
 - Maven
 - MySQL
-- Node.js and npm (for frontend development, if applicable)
 
 ## Getting Started
 
@@ -33,4 +32,12 @@ This project is a Customer Management System built with a Spring Boot backend, M
 
    ```bash
    git clone https://github.com/your-username/customer-management-system.git
-   cd customer-management-system
+   cd customer-management-system ```
+
+1. **Configure MySQL database:**
+
+   ```bash
+   spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+   spring.datasource.username=your_database_username
+   spring.datasource.password=your_database_password
+   spring.jpa.hibernate.ddl-auto=update ```
