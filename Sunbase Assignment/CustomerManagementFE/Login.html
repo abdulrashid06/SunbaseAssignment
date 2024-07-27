@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+            <button type="submit">Login</button>
+            <a style="text-align: center;" href="SignUp.html">SignUp</a>
+        </form>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            let apiUrl;
+            if (username === 'test@sunbasedata.com') {
+                apiUrl = 'https://qa.sunbasedata.com/sunbase/portal/api/assignment_auth.jsp';
+                // sunbase API call
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ login_id: username, password: password })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response data:', data.access_token);
+                    const token = data.access_token;
+                    if (token) {
+                        alert('Login successful');
+                        localStorage.setItem('authToken', token);
+                        localStorage.setItem('loggedInUser', username);
+                        window.location.href = 'index.html';
+                    } else {
+                        alert('Login failed: Token not found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Login failed: ' + error.message);
+                });
+            } else {
+                apiUrl = 'http://localhost:8080/api/auth/login';
+                // localhost API call
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: username, password: password })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Handle response headers to get the token
+                    const token = response.headers.get('Authorization'); // Adjust header name if necessary
+                    if (token) {
+                        alert('Login successful');
+                        localStorage.setItem('UserToken', token);
+                        localStorage.setItem('loggedInUser', username);
+                        window.location.href = 'index.html';
+                    } else {
+                        alert('Login failed: Token not found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Login failed: ' + error.message);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
