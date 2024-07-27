@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/e34ebb14-ac60-45c9-998d-d5b5b4d63042)# Customer Management System
+### Customer Management System
 
 This project is a Customer Management System built with a Spring Boot backend, MySQL database, and a basic HTML/CSS/JavaScript frontend. The application allows you to create, read, update, and delete customer records. It also includes JWT authentication and a sync feature to fetch customer data from a remote API and update the local database.
 
