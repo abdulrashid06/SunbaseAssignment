@@ -31,6 +31,9 @@
         </form>
     </div>
     <script>
+
+const token = localStorage.getItem('authToken'); // Retrieve the token from local storage
+const UserToken = localStorage.getItem('UserToken'); // Retrieve the token from local storage
         
     document.getElementById('addCustomerForm').addEventListener('submit', function (e) {
         e.preventDefault();
@@ -49,7 +52,7 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer ' + token
+                // 'Authorization': UserToken
             },
             body: JSON.stringify(customer)
         })

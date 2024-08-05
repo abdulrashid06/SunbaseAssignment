@@ -2,13 +2,14 @@ package com.sunbase.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.sunbase.exception.DuplicateDataException;
 import com.sunbase.exception.NoRecordFoundException;
 import com.sunbase.model.Customer;
@@ -25,13 +26,15 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Override
 	public Customer createCustomer(Customer customer) {
-		Customer existingCutomer = customerRepository.findByEmail(customer.getEmail());
-		
-		if(existingCutomer!=null) {
-			throw new DuplicateDataException("Customer already exists!");
-		}
-		
-		return customerRepository.save(customer);
+		if (customerRepository.findByUuid(customer.getUuid()).isPresent()) {
+	        throw new DuplicateDataException("Customer with this UUID already exists!");
+	    }
+	    if (customer.getUuid() == null) {
+	        customer.setUuid(UUID.randomUUID().toString());
+	    } else {
+	        customer.formatUuid(); // Format the UUID if it's not in the correct format
+	    }
+	    return customerRepository.save(customer);
 	}
 
 	
@@ -125,21 +128,32 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	
 	public void syncCustomers(List<Customer> customers) {
-        for (Customer customer : customers) {
-            Customer existingCustomer = customerRepository.findByEmail(customer.getEmail());
-            if (existingCustomer != null) {
-                existingCustomer.setFirst_name(customer.getFirst_name());
-                existingCustomer.setLast_name(customer.getLast_name());
-                existingCustomer.setStreet(customer.getStreet());
-                existingCustomer.setAddress(customer.getAddress());
-                existingCustomer.setCity(customer.getCity());
-                existingCustomer.setState(customer.getState());
-                existingCustomer.setPhone(customer.getPhone());
-                customerRepository.save(existingCustomer);
-            } else {
-                customerRepository.save(customer);
-            }
-        }
-    }
+	    for (Customer customer : customers) {
+	        Optional<Customer> existingCustomerOptional = customerRepository.findByUuid(customer.getUuid());
+
+	        if (existingCustomerOptional.isPresent()) {
+	            // Retrieve the existing Customer object
+	            Customer existingCustomer = existingCustomerOptional.get();
+	            // Update the existing Customer fields with new values
+	            existingCustomer.setFirst_name(customer.getFirst_name());
+	            existingCustomer.setLast_name(customer.getLast_name());
+	            existingCustomer.setStreet(customer.getStreet());
+	            existingCustomer.setAddress(customer.getAddress());
+	            existingCustomer.setCity(customer.getCity());
+	            existingCustomer.setState(customer.getState());
+	            existingCustomer.setPhone(customer.getPhone());
+	            // Save the updated Customer object
+	            customerRepository.save(existingCustomer);
+	        } else {
+	            // Set UUID if it's not already set
+	            if (customer.getUuid() == null) {
+	                customer.setUuid(UUID.randomUUID().toString());
+	            }
+	            // Save the new Customer object
+	            customerRepository.save(customer);
+	        }
+	    }
+	}
+
 
 }

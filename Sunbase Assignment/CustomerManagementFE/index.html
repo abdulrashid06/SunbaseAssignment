@@ -154,7 +154,7 @@
         <table id="customerTable">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>UUID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Street</th>
@@ -175,6 +175,7 @@
     </div>
     <script>
         const token = localStorage.getItem('authToken'); // Retrieve the token from local storage
+        const UserToken = localStorage.getItem('UserToken'); // Retrieve the token from local storage
         const loggedInUser = localStorage.getItem('loggedInUser');
 
         if (!token) {
@@ -194,7 +195,7 @@
             fetch(`http://localhost:8080/api/getCustomerListWithPagination?page=${page}`, {
                 method: 'GET',
                 // headers: {
-                //     'Authorization': 'Bearer ' + token // Use the token from local storage
+                //     'Authorization': UserToken // Use the token from local storage
                 // }
             })
                 .then(response => response.json())
@@ -233,7 +234,7 @@
                 fetch(`http://localhost:8080/api/delete/${customerId}`, {
                     method: 'DELETE',
                     // headers: {
-                    //     'Authorization': 'Bearer ' + token // Use the token from local storage
+                    //     'Authorization': UserToken // Use the token from local storage
                     // }
                 })
                     .then(response => {
@@ -291,7 +292,7 @@
             tbody.innerHTML = '';
             customers.forEach(customer => {
                 const row = tbody.insertRow();
-                row.insertCell(0).innerText = customer.id;
+                row.insertCell(0).innerText = customer.uuid;
                 row.insertCell(1).innerText = customer.first_name;
                 row.insertCell(2).innerText = customer.last_name;
                 row.insertCell(3).innerText = customer.street;

@@ -2,15 +2,16 @@ body {
     font-family: Arial, sans-serif;
     line-height: 1.2;
     margin: 0;
-    padding: 20px;
+    padding: 10px;
     background-color: #f4f4f4;
 }
 
 .container {
-    max-width: 450px;
+    max-width: 400px;
+    height: auto;
     margin: 0 auto;
     background-color: #fff;
-    padding: 20px;
+    padding: 5px 20px 10px 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -19,7 +20,7 @@ h2 {
     color: #333;
     border-bottom: 1px solid #ccc;
     padding-bottom: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 form {
@@ -36,11 +37,11 @@ input[type="email"],
 button[type="submit"],
 button {
     padding: 6px;
-    margin-bottom: 10px;
+    margin-bottom: -5px;
     border: 1px solid #ccc;
     border-radius: 3px;
     font-size: 1rem;
-    width: 100%;
+    width: 97%;
 }
 
 button[type="submit"],

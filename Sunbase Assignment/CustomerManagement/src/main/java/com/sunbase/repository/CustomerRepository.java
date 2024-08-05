@@ -1,6 +1,8 @@
 package com.sunbase.repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +15,8 @@ import com.sunbase.model.Customer;
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	
 	Customer findByEmail(String email);
+	
+	Optional<Customer> findByUuid(String uuid);
 	
 	Page<Customer> findAll(Pageable pageable);
 

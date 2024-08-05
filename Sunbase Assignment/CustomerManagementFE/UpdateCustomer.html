@@ -30,6 +30,8 @@
         </form>
     </div>
     <script>
+        // const token = localStorage.getItem('authToken'); // Retrieve the token from local storage
+        const UserToken = localStorage.getItem('UserToken'); // Retrieve the token from local storage
         const token = localStorage.getItem('authToken'); // Retrieve the token from local storage
         if (!token) {
             alert('You are not logged in');
@@ -48,7 +50,7 @@
             fetch(`http://localhost:8080/api/customer/${customerId}`, {
                 method: 'GET',
                 // headers: {
-                //     'Authorization': 'Bearer ' + token
+                //     'Authorization': UserToken
                 // }
             })
             .then(response => {
